@@ -1,0 +1,9 @@
+.metadata/
+*.pdf
+.recommenders/
+RemoteSystemsTempFiles/
+scratchpad/
+target/
+bin/
+*.*~
+*~
