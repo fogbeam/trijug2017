@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.fogbeam.presentation.realtimeml.prediction.rpc";
+option java_outer_classname = "PredictionProto";
+option objc_class_prefix = "HLW";
+
+package com.neuralobjects.backend.prediction.rpc;
+
+// The prediction service definition.
+service PredictionService {
+  
+  // make a prediction
+  rpc MakePrediction (PredictionRequest) returns (PredictionReply) {}
+}
+
+// The prediction request
+message PredictionRequest {
+  uint32 primaryRedValue = 1;
+  uint32 primaryGreenValue = 2;
+  uint32 primaryBlueValue = 3;
+  uint32 secondaryRedValue = 4;
+  uint32 secondaryGreenValue = 5;
+  uint32 secondaryBlueValue = 6;
+  bool offerProductCategory1 = 7;
+  bool offerProductCategory2 = 8;
+  bool offerProductCategory3 = 9;
+  bool offerProductCategory4 = 10;
+  bool offerProductCategory5 = 11;
+  bool offerProductCategory6 = 12;
+  bool offerProductCategory7 = 13;
+  bool offerType1 = 14;
+  bool offerType2 = 15;
+  double totalAmount = 16;
+  bool state1 = 17;
+  bool state2 = 18;
+  bool state3 = 19;
+  bool state4 = 20;
+  bool state5 = 21;
+  bool state6 = 22;
+  bool state7 = 23;
+  bool state8 = 24;
+  bool state9 = 25;
+  bool state10 = 26;
+  bool state11 = 27;
+  bool state12 = 28;
+  bool state13 = 29;
+  bool state14 = 30;
+  bool state15 = 31;
+  bool state16 = 32;
+  bool state17 = 33;
+  bool state18 = 34;
+  bool state19 = 35;
+  bool state20 = 36;
+  bool state21 = 37;
+  bool state22 = 38;
+  bool state23 = 39;
+  bool state24 = 40;
+  bool state25 = 41;
+  bool state26 = 42;
+  bool state27 = 43;
+  bool state28 = 44;
+  bool state29 = 45;
+  bool state30 = 46;
+  bool state31 = 47;
+  bool state32 = 48;
+  bool state33 = 49;
+  bool state34 = 50;
+  bool state35 = 51;
+  bool state36 = 52;
+  bool state37 = 53;
+  bool state38 = 54;
+  bool state39 = 55;
+  bool state40 = 56;
+  bool state41 = 57;
+  bool state42 = 58;
+  bool state43 = 59;
+  bool state44 = 60;
+  bool state45 = 61;
+  bool state46 = 62;
+  bool state47 = 63;
+  bool state48 = 64;
+  bool state49 = 65;
+  bool state50 = 66;
+  bool state51 = 67;
+  
+}
+
+// The prediction response
+message PredictionReply {
+  bool predictedValue = 1;
+}

@@ -2,6 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.fogbeam.presentation</groupId>
+	<artifactId>prediction_service</artifactId>
 	<version>0.0.1</version>
 
 
@@ -65,6 +66,34 @@
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
 		</dependency>
+
+		<!-- gRPC dependencies -->
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-netty</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-protobuf</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-stub</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+
+
+		<!-- DL4J dependencies -->
 		<dependency>
 			<groupId>org.nd4j</groupId>
 			<artifactId>nd4j-native-platform</artifactId>
@@ -155,66 +184,59 @@
 
 
 	<build>
-		<plugins>
 
+		<extensions>
+			<extension>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>1.4.1.Final</version>
+			</extension>
+		</extensions>
+
+
+		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
+				<groupId>org.xolstice.maven.plugins</groupId>
+				<artifactId>protobuf-maven-plugin</artifactId>
+				<version>0.5.0</version>
 				<configuration>
-					<createDependencyReducedPom>true</createDependencyReducedPom>
-					<filters>
-						<filter>
-							<artifact>*:*</artifact>
-							<excludes>
-								<exclude>META-INF/*.SF</exclude>
-								<exclude>META-INF/*.sf</exclude>
-								<exclude>META-INF/*.DSA</exclude>
-								<exclude>META-INF/*.dsa</exclude>
-								<exclude>META-INF/*.RSA</exclude>
-								<exclude>META-INF/*.rsa</exclude>
-								<exclude>META-INF/*.EC</exclude>
-								<exclude>META-INF/*.ec</exclude>
-								<exclude>META-INF/MSFTSIG.SF</exclude>
-								<exclude>META-INF/MSFTSIG.RSA</exclude>
-							</excludes>
-						</filter>
-					</filters>
+					<protocArtifact>com.google.protobuf:protoc:3.0.2:exe:${os.detected.classifier}</protocArtifact>
+					<pluginArtifact>io.grpc:protoc-gen-grpc-java:1.2.0:exe:${os.detected.classifier}</pluginArtifact>
+					<pluginId>grpc-java</pluginId>
+					<outputDirectory>src/main/java</outputDirectory>
+					<clearOutputDirectory>false</clearOutputDirectory>
 				</configuration>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<phase>generate-sources</phase>
 						<goals>
-							<goal>shade</goal>
+							<goal>compile</goal>
+							<goal>compile-custom</goal>
 						</goals>
-						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-								</transformer>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<manifestEntries>
-										<Main-Class>org.fogbeam.experimental.storm.SampleJmsTopology</Main-Class>
-									</manifestEntries>
-								</transformer>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>META-INF/spring.handlers</resource>
-								</transformer>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>META-INF/spring.schemas</resource>
-								</transformer>
-
-							</transformers>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
+
 		</plugins>
 	</build>
 
-	<artifactId>prediction_service</artifactId>
 </project>
+
+<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-shade-plugin</artifactId> 
+	<configuration> <createDependencyReducedPom>true</createDependencyReducedPom> 
+	<filters> <filter> <artifact>*:*</artifact> <excludes> <exclude>META-INF/*.SF</exclude> 
+	<exclude>META-INF/*.sf</exclude> <exclude>META-INF/*.DSA</exclude> <exclude>META-INF/*.dsa</exclude> 
+	<exclude>META-INF/*.RSA</exclude> <exclude>META-INF/*.rsa</exclude> <exclude>META-INF/*.EC</exclude> 
+	<exclude>META-INF/*.ec</exclude> <exclude>META-INF/MSFTSIG.SF</exclude> <exclude>META-INF/MSFTSIG.RSA</exclude> 
+	</excludes> </filter> </filters> </configuration> <executions> <execution> 
+	<phase>package</phase> <goals> <goal>shade</goal> </goals> <configuration> 
+	<transformers> <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" 
+	/> <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"> 
+	</transformer> <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"> 
+	<manifestEntries> <Main-Class>org.fogbeam.experimental.storm.SampleJmsTopology</Main-Class> 
+	</manifestEntries> </transformer> <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer"> 
+	<resource>META-INF/spring.handlers</resource> </transformer> <transformer 
+	implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer"> 
+	<resource>META-INF/spring.schemas</resource> </transformer> </transformers> 
+	</configuration> </execution> </executions> </plugin> -->
