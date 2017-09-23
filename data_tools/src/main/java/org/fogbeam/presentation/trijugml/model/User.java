@@ -1,5 +1,7 @@
 package org.fogbeam.presentation.trijugml.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +16,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
 @Table(name="users")
-public class User 
+public class User implements Serializable
 {
 		
 	@Id

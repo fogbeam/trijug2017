@@ -1,5 +1,7 @@
 package org.fogbeam.presentation.trijugml.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
 @Table(name="offer_types")
-public class OfferType
+public class OfferType implements Serializable
 {
 	
 	/*

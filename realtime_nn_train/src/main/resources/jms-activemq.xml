@@ -35,7 +35,6 @@
 	
 	<amq:queue id="notificationQueue" physicalName="backtype.storm.contrib.example.queue" />
 	
-	<amq:topic id="notificationTopic" physicalName="backtype.storm.contrib.example.topic" />
 
 	<amq:connectionFactory id="jmsConnectionFactory"
 		brokerURL="tcp://localhost:61616" />

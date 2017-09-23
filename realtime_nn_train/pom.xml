@@ -20,12 +20,12 @@
 			to use CUDA GPUs -->
 		<nd4j.backend>nd4j-native-platform</nd4j.backend>
 		<nd4j.version>0.7.2</nd4j.version>
-		
+
 		<dl4j.version>0.7.2</dl4j.version>
 		<datavec.version>0.7.2</datavec.version>
 		<arbiter.version>0.7.2</arbiter.version>
 		<rl4j.version>0.7.2</rl4j.version>
-		
+
 		<guava.version>19.0</guava.version>
 		<logback.version>1.1.7</logback.version>
 		<jfreechart.version>1.0.13</jfreechart.version>
@@ -67,13 +67,25 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>org.fogbeam.presentation</groupId>
+			<artifactId>initial_model_train</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.fogbeam.presentation.realtimeml</groupId>
+			<artifactId>data_tools</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+
 		<!--clojure -->
 		<dependency>
 			<groupId>org.clojure</groupId>
 			<artifactId>clojure</artifactId>
 			<version>${clojure.version}</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>junit</groupId>

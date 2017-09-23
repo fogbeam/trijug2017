@@ -1,5 +1,6 @@
 package org.fogbeam.presentation.trijugml.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,7 +17,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
 @Table(name="orders")
-public class Order 
+public class Order implements Serializable
 {
 	
 	

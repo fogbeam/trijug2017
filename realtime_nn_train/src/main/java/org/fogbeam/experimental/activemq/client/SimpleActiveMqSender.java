@@ -9,6 +9,12 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.fogbeam.experimental.storm.TextHolder;
+import org.fogbeam.presentation.trijugml.model.OfferProductCategory;
+import org.fogbeam.presentation.trijugml.model.OfferType;
+import org.fogbeam.presentation.trijugml.model.Order;
+import org.fogbeam.presentation.trijugml.model.Promotion;
+import org.fogbeam.presentation.trijugml.model.State;
+import org.fogbeam.presentation.trijugml.model.User;
 
 /**
  * 
@@ -46,7 +52,40 @@ public class SimpleActiveMqSender
             // Create a messages
             String text = "Hello world! From thread: " + Thread.currentThread().getName() + " : " + SimpleActiveMqSender.class.hashCode();
             // TextMessage message = session.createTextMessage(text);
-            ObjectMessage message = session.createObjectMessage( new TextHolder( text ) );
+            
+            
+            // create a record for training...
+            Order order = new Order();
+            order.setId( 42L ); // just a dummy value
+            order.setTotalAmount( 50000L );
+            Promotion promotion = new Promotion();
+            
+            promotion.setPrimaryColor( "FACADA" );
+            promotion.setSecondaryColor( "00FF00" );
+            
+            order.setPromotion( promotion );
+            order.setPromotionAdded( true );
+            OfferType offerType = new OfferType();
+            offerType.setId( 1L );
+            promotion.setOfferType( offerType );
+            
+            
+            OfferProductCategory offerProductCategory = new OfferProductCategory();
+            offerProductCategory.setId( 4L );
+            promotion.setOfferProductCategory( offerProductCategory );
+            
+            User user = new User();
+            user.setUserName( "testUser" );
+            State state = new State();
+            state.setAbbreviation( "NC" );
+            state.setId( 37L );
+            state.setName( "North Carolina" );
+            user.setState( state );
+            
+            order.setUser( user );
+            
+            
+            ObjectMessage message = session.createObjectMessage( order );
             
             
             // Tell the producer to send the message

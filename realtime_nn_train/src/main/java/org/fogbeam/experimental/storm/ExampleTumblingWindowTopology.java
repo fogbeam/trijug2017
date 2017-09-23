@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.jms.Session;
 
+import org.apache.log4j.BasicConfigurator;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.StormSubmitter;
@@ -135,6 +136,9 @@ public class ExampleTumblingWindowTopology
 	
 	public static void main( String[] args ) throws Exception
 	{
+		
+		BasicConfigurator.configure();
+		
 		TopologyBuilder builder = new TopologyBuilder();
 		
 		

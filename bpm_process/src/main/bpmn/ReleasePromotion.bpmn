@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="releasePromotion" name="Release Promotion process" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <serviceTask id="servicetask1" name="Call Machine Learning Model" activiti:class="org.fogbeam.presentation.realtimeml.bpm.servicetask.MLPromotionClassifierService"></serviceTask>
+    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="AutoApprove"></exclusiveGateway>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Release Promotion" activiti:class="org.fogbeam.presentation.realtimeml.bpm.servicetask.ReleasePromotionService"></serviceTask>
+    <sequenceFlow id="flow4" name="AutoRelease == YES" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${autoRelease == true}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask1" name="Human Review"></userTask>
+    <sequenceFlow id="flow6" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>print( "Sending for human review" );</script>
+    </scriptTask>
+    <sequenceFlow id="flow9" name="AutoRelease == NO" sourceRef="exclusivegateway1" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${autoRelease == false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow11" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow12" name="HumanApproved == YES" sourceRef="exclusivegateway2" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${humanApproved == true}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow13" name="HumanApproved == NO" sourceRef="exclusivegateway2" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${humanApproved == false}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_releasePromotion">
+    <bpmndi:BPMNPlane bpmnElement="releasePromotion" id="BPMNPlane_releasePromotion">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="110.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="765.0" y="382.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="81.0" width="151.0" x="52.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="330.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="298.0" y="370.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="730.0" y="181.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="183.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="762.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="127.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="127.0" y="170.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="203.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="350.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="370.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="36.0" width="100.0" x="354.0" y="277.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="403.0" y="397.0"></omgdi:waypoint>
+        <omgdi:waypoint x="765.0" y="399.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="370.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="210.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="12.0" width="100.0" x="369.0" y="190.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="605.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="208.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="782.0" y="236.0"></omgdi:waypoint>
+        <omgdi:waypoint x="782.0" y="290.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="782.0" y="330.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="370.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="36.0" width="100.0" x="601.0" y="326.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="782.0" y="330.0"></omgdi:waypoint>
+        <omgdi:waypoint x="782.0" y="382.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="36.0" width="100.0" x="799.0" y="329.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

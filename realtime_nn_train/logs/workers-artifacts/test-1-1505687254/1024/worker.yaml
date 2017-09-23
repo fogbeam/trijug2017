@@ -1,0 +1,4 @@
+worker-id: 32fa39f3-d4d5-44b9-99b0-24475dfc2082
+logs.users: []
+logs.groups: []
+topology.submitter.user: prhodes

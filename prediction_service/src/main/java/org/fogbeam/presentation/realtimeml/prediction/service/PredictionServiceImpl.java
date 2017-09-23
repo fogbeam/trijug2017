@@ -111,7 +111,7 @@ public class PredictionServiceImpl extends PredictionServiceGrpc.PredictionServi
 			
 			System.out.println( "output: " + output );
 			
-			boolean prediction = (  ( output.getDouble(0) < output.getDouble(1) ) ? true : false );
+			boolean prediction = (  ( output.getDouble(0) < output.getDouble(1) ) ? false : true );
 			
 			PredictionReply reply = PredictionReply.newBuilder().setPredictedValue(prediction).build();
 			

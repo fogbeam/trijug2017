@@ -1,5 +1,6 @@
 package org.fogbeam.presentation.realtimeml.nntrain;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
 import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
+import org.deeplearning4j.util.ModelSerializer;
 import org.fogbeam.presentation.realtimeml.repository.OfferProductCategoryRepository;
 import org.fogbeam.presentation.realtimeml.repository.OfferTypeRepository;
 import org.fogbeam.presentation.realtimeml.repository.OrderRepository;
@@ -149,6 +151,10 @@ public class NNModelTrainer
 				
 			}
 			
+			
+			File locationToSave = new File("/opt/ml/models/PromotionsModel.zip");  // Where to save the network. Note: the file is in .zip format - can be opened externally
+			ModelSerializer.writeModel( model, locationToSave, true );
+
 		}
 		catch( Exception e )
 		{
@@ -160,7 +166,7 @@ public class NNModelTrainer
 	}
 
 	
-	private static List<Writable> makeRecord( Order order )
+	public static List<Writable> makeRecord( Order order )
 	{
 		List<Writable> aRecord = new ArrayList<Writable>();
 		
